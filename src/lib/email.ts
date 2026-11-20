@@ -15,7 +15,7 @@ export async function sendEmail(to: string | string[], subject: string, html: st
     console.warn("RESEND_API_KEY not set; email not sent:", subject);
     return;
   }
-  const from = process.env.EMAIL_FROM || "Events <onboarding@resend.dev>";
+  const from = process.env.EMAIL_FROM || `${SITE_NAME} <onboarding@resend.dev>`;
   const { error } = await new Resend(key).emails.send({ from, to, subject, html });
   if (error) throw new Error(error.message);
 }

@@ -1,14 +1,28 @@
 @import "tailwindcss";
 
-/* Branding lives here: change these tokens (and the logo in src/components/Header.tsx) to rebrand. */
+/* ───────────── Branding tokens: change these to rebrand the whole site ───────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-  --brand: #4f46e5;
+  --background: #fbfaf7;
+  --foreground: #16130f;
+  --brand: #3f3cbb;
   --brand-contrast: #ffffff;
-  --muted: #6b7280;
-  --border: #e5e7eb;
-  --surface: #f9fafb;
+  --muted: #6a655d;
+  --border: #e4e0d8;
+  --surface: #ffffff;
+  --tint: #f3f1ea;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0e0d0b;
+    --foreground: #f1eee7;
+    --brand: #8b89ff;
+    --brand-contrast: #0e0d0b;
+    --muted: #a39d92;
+    --border: #2a2823;
+    --surface: #161512;
+    --tint: #1a1814;
+  }
 }
 
 @theme inline {
@@ -19,31 +33,37 @@
   --color-muted: var(--muted);
   --color-line: var(--border);
   --color-surface: var(--surface);
+  --color-tint: var(--tint);
   --font-sans: var(--font-geist-sans);
+  --font-display: var(--font-fraunces);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-    --muted: #9ca3af;
-    --border: #262626;
-    --surface: #141414;
-  }
-}
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+[id] { scroll-margin-top: 5rem; }
 
 body { background: var(--background); color: var(--foreground); font-family: var(--font-sans), system-ui, sans-serif; }
+h1, h2, h3 { text-wrap: balance; }
+:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
 
-.btn { display: inline-block; border-radius: 0.5rem; padding: 0.55rem 1rem; font-weight: 600; background: var(--brand); color: var(--brand-contrast); cursor: pointer; border: 0; }
+/* ───────────── Shared building blocks ───────────── */
+.btn { display: inline-flex; align-items: center; justify-content: center; border-radius: 999px; padding: 0.65rem 1.25rem; font-weight: 600; background: var(--brand); color: var(--brand-contrast); cursor: pointer; border: 1px solid transparent; transition: filter .15s, background .15s; text-align: center; }
 .btn:hover { filter: brightness(1.1); }
 .btn:disabled { opacity: 0.5; cursor: not-allowed; }
-.btn-ghost { background: transparent; color: var(--foreground); border: 1px solid var(--border); }
+.btn-sm { padding: 0.45rem 1rem; font-size: 0.875rem; }
+.btn-ghost { background: transparent; color: var(--foreground); border-color: var(--border); }
+.btn-ghost:hover { background: var(--tint); filter: none; }
 .btn-danger { background: #dc2626; color: #fff; }
-.input { width: 100%; border: 1px solid var(--border); border-radius: 0.5rem; padding: 0.5rem 0.75rem; background: var(--background); color: var(--foreground); }
-.label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.25rem; }
-.card { border: 1px solid var(--border); border-radius: 0.75rem; padding: 1.25rem; background: var(--surface); }
+.input { width: 100%; border: 1px solid var(--border); border-radius: 0.75rem; padding: 0.6rem 0.85rem; background: var(--surface); color: var(--foreground); }
+.label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.3rem; }
+.card { border: 1px solid var(--border); border-radius: 1rem; padding: 1.25rem; background: var(--surface); }
 .table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
 .table th, .table td { text-align: left; padding: 0.5rem; border-bottom: 1px solid var(--border); }
+.eyebrow { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--brand); }
+.display { font-family: var(--font-display), Georgia, serif; letter-spacing: -0.015em; line-height: 1.08; }
+.section { padding-block: clamp(3.5rem, 8vw, 6rem); }
+.wrap { margin-inline: auto; width: 100%; max-width: 72rem; padding-inline: 1.25rem; }
+.badge { display: inline-block; border-radius: 999px; padding: 0.2rem 0.65rem; font-size: 0.75rem; font-weight: 600; background: var(--tint); border: 1px solid var(--border); }
 
 @media print {
   .no-print { display: none !important; }

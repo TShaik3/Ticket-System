@@ -1,4 +1,4 @@
-export const SITE_NAME = process.env.NEXT_PUBLIC_SITE_NAME || "Events";
+export const SITE_NAME = process.env.NEXT_PUBLIC_SITE_NAME || "Muslim Connect";
 export const siteUrl = () => (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000").replace(/\/$/, "");
 
 export function money(cents: number) {
@@ -37,3 +37,11 @@ export function slugify(s: string) {
 
 export const nowMs = () => Date.now();
 export const hoursAgoIso = (h: number) => new Date(Date.now() - h * 3600 * 1000).toISOString();
+
+export function dateParts(iso: string) {
+  const d = new Date(iso);
+  return {
+    date: d.toLocaleDateString("en-US", { timeZone: TZ, weekday: "short", month: "short", day: "numeric" }),
+    time: d.toLocaleTimeString("en-US", { timeZone: TZ, hour: "numeric", minute: "2-digit" }),
+  };
+}

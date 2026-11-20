@@ -44,3 +44,6 @@ next-env.d.ts
 .open-next
 .wrangler
 .dev.vars
+
+# keep the template of required settings in the repo
+!.env.example

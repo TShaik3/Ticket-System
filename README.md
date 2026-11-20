@@ -16,6 +16,7 @@ Requirements and decisions are in [TICKETING_SYSTEM.md](TICKETING_SYSTEM.md).
 ### 1. Supabase
 1. Create a project at supabase.com.
 2. SQL Editor: run [supabase/migrations/001_init.sql](supabase/migrations/001_init.sql).
+2b. Then run [supabase/migrations/002_landing.sql](supabase/migrations/002_landing.sql) (adds event categories/summary and the contact inquiries table).
 3. Authentication → Users → **Add user** (your email + password, tick auto-confirm). Turn off public sign-ups: Authentication → Sign In / Providers → disable "Allow new users to sign up".
 4. Make yourself the owner (SQL Editor):
    ```sql
@@ -59,6 +60,10 @@ Then add your custom domain in the Cloudflare dashboard (Workers → ticket-syst
 
 ### Going live with Stripe
 Create the business account, then replace `STRIPE_SECRET_KEY` with the live key, create a new live-mode webhook endpoint, and replace `STRIPE_WEBHOOK_SECRET`. Make one small real purchase and refund it before announcing.
+
+## Landing page content
+
+Edit [src/content/site.ts](src/content/site.ts): headline, stats, mission, pillars, testimonials, contact details, social links, and inquiry types. **All values there are sample placeholders**; replace the stats and testimonials with real, permissioned ones before launch. Events, partner logos (from each event's sponsors) and inquiries come from the admin area. Set `CONTACT_EMAIL` (plus Resend) if you want inquiries emailed to you; they are always saved at `/admin/inquiries`.
 
 ## Branding (do this last)
 

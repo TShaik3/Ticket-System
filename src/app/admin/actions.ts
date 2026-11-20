@@ -28,6 +28,8 @@ export async function saveEvent(fd: FormData) {
     starts_at: startsAt,
     ends_at: localInputToIso(str(fd, "ends_at")),
     image_url: optStr(fd, "image_url"),
+    summary: optStr(fd, "summary"),
+    category: ["general", "founders", "creatives", "tech"].includes(str(fd, "category")) ? str(fd, "category") : "general",
     capacity: optInt(fd, "capacity"),
     status: ["draft", "published", "closed"].includes(str(fd, "status")) ? str(fd, "status") : "draft",
   };
@@ -154,4 +156,10 @@ export async function refundOrder(fd: FormData) {
   await supabase.from("tickets").update({ status: "cancelled" }).eq("order_id", orderId);
   revalidatePath(`/admin/events/${eventId}/guests`);
   redirect(`/admin/events/${eventId}/guests?refunded=1`);
+}
+
+export async function toggleInquiry(fd: FormData) {
+  await requireAdmin();
+  await db().from("contact_messages").update({ handled: str(fd, "handled") !== "true" }).eq("id", str(fd, "id"));
+  revalidatePath("/admin/inquiries");
 }

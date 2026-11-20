@@ -36,3 +36,27 @@ export async function getPublicEvent(slug: string) {
   }));
   return { event, ticketTypes, sponsors: sponsors ?? [] };
 }
+
+/** Upcoming published events with a capacity label, for the landing page. */
+export async function getUpcomingEvents(sinceIso: string) {
+  const supabase = db();
+  const { data: events } = await supabase
+    .from("events")
+    .select("*")
+    .eq("status", "published")
+    .gte("starts_at", sinceIso)
+    .order("starts_at");
+  if (!events?.length) return [];
+  const ids = events.map((e) => e.id);
+  const [{ data: types }, { data: sponsors }, counts] = await Promise.all([
+    supabase.from("ticket_types").select("event_id, quantity_total").in("event_id", ids).eq("active", true),
+    supabase.from("sponsors").select("event_id, name, logo_url, link_url").in("event_id", ids).order("sort"),
+    Promise.all(events.map((e) => taken(e.id))),
+  ]);
+  return events.map((e, i) => {
+    const typeTotal = (types ?? []).filter((t) => t.event_id === e.id).reduce((s, t) => s + t.quantity_total, 0);
+    const cap = e.capacity ?? (typeTotal || null);
+    const left = cap == null ? null : Math.max(cap - counts[i].total, 0);
+    return { ...e, cap, left, sponsors: (sponsors ?? []).filter((s) => s.event_id === e.id) };
+  });
+}

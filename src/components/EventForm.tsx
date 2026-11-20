@@ -3,7 +3,7 @@ import { isoToLocalInput } from "@/lib/format";
 
 type Ev = {
   id?: string; title?: string; slug?: string; description?: string | null; location?: string | null; address?: string | null;
-  starts_at?: string; ends_at?: string | null; image_url?: string | null; capacity?: number | null; status?: string;
+  summary?: string | null; category?: string; starts_at?: string; ends_at?: string | null; image_url?: string | null; capacity?: number | null; status?: string;
 };
 
 export default function EventForm({ event = {} }: { event?: Ev }) {
@@ -27,6 +27,18 @@ export default function EventForm({ event = {} }: { event?: Ev }) {
             <option value="closed">Closed (sales off)</option>
           </select>
         </div>
+      </div>
+      <div className="grid gap-4 sm:grid-cols-2">
+        <div>
+          <label className="label">Category (landing page filter)</label>
+          <select name="category" defaultValue={event.category ?? "general"} className="input">
+            <option value="general">General (shows under All Events)</option>
+            <option value="founders">Founders</option>
+            <option value="creatives">Creatives</option>
+            <option value="tech">Tech &amp; Industry</option>
+          </select>
+        </div>
+        <div><label className="label">Card summary (about 2 sentences)</label><input name="summary" maxLength={240} defaultValue={event.summary ?? ""} className="input" /></div>
       </div>
       <div><label className="label">Description</label><textarea name="description" rows={6} defaultValue={event.description ?? ""} className="input" /></div>
       <button className="btn">Save event</button>
